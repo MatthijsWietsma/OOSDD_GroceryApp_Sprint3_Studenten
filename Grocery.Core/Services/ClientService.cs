@@ -16,7 +16,7 @@ namespace Grocery.Core.Services
         {
             _clientRepository = clientRepository;
         }
-        
+
         public Client? Get(string email)
         {
             return _clientRepository.Get(email);
@@ -25,6 +25,11 @@ namespace Grocery.Core.Services
         public Client? Get(int id)
         {
             return _clientRepository.Get(id);
+        }
+
+        public Client Create(string name, string email, string password)
+        {
+            return _clientRepository.Create(_clientRepository.GetAll().Count + 1, name, email, password);
         }
 
         public List<Client> GetAll()
