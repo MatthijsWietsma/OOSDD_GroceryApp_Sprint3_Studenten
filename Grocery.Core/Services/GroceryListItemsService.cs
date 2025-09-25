@@ -44,6 +44,15 @@ namespace Grocery.Core.Services
             throw new NotImplementedException();
         }
 
+        public List<Product> FilterAvailableProducts(string stringInName, List<Product> products)
+        {
+            stringInName = stringInName.ToLower(); // Ensure the string is in lowecase to avoid irritation while searching
+
+            // Filter through all products and create a new list with them
+            products = products.Where(x => x.Name.Contains(stringInName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            return products;
+        }
+
         public GroceryListItem? Update(GroceryListItem item)
         {
             throw new NotImplementedException();
