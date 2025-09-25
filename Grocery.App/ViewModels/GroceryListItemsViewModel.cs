@@ -1,14 +1,11 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Grocery.App.Views;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Grocery.App.ViewModels
 {
@@ -18,9 +15,7 @@ namespace Grocery.App.ViewModels
         private readonly IGroceryListItemsService _groceryListItemsService;
         private readonly IProductService _productService;
         private readonly IFileSaverService _fileSaverService;
-
-        private string _searchText = "";
-
+        
         public ObservableCollection<GroceryListItem> MyGroceryListItems { get; set; } = [];
         public ObservableCollection<Product> AvailableProducts { get; set; } = [];
 
@@ -48,21 +43,13 @@ namespace Grocery.App.ViewModels
         {
             AvailableProducts.Clear();
             foreach (Product p in _productService.GetAll())
-                if (MyGroceryListItems.FirstOrDefault(g => g.ProductId == p.Id) == null && p.Stock > 0 && (_searchText == "" || p.name.ToLower().Contains(_searchText)))
+                if (MyGroceryListItems.FirstOrDefault(g => g.ProductId == p.Id) == null  && p.Stock > 0)
                     AvailableProducts.Add(p);
         }
 
         partial void OnGroceryListChanged(GroceryList value)
         {
             Load(value.Id);
-        }
-
-        [RelayCommand]
-        public async Task SearchProducts(string searchText)
-        {
-            _searchText = searchText.ToLower();
-
-            GetAvailableProducts();
         }
 
         [RelayCommand]
